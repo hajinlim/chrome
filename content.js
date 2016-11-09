@@ -97,12 +97,18 @@ $(document).ready(function(){
           //console.log(count);
           console.log(data);
           console.log(data["entities"]);
-        console.log(data["entities"]["entity"]);
-        console.log(data["entities"]["entity"]["type"]);
-        console.log(data["entities"]["entity"]["text"]);
-
-        var analysis = "Entity: " + data["entities"]["entity"];
+        var count = data["entities"].length;
+        console.log(data["entities"][0]["text"]);
+        for (var i=0; i<count; i++){
+          var entity = data["entities"][i];
+          var analysis = "Text: " + entity["text"] + "<br>Type: " + entity["type"] + "<br>";
           $("#translation-box").append(analysis);
+        }
+        console.log(data["entities"][0]["type"]);
+        console.log(data["entities"][0]["relevance"]);
+        console.log(data["entities"][0]["text"]);
+
+
         //  }
 
 
