@@ -93,15 +93,13 @@ $(document).ready(function(){
         var list = [0,1,2,3];
         $("#translation-box").append("<h2> Entity Analysis: </h2>");
         $("#translation-box").append("<br>");
-       // for (var i = 0; i < count; i++) {
-          //console.log(count);
           console.log(data);
           console.log(data["entities"]);
         var count = data["entities"].length;
         console.log(data["entities"][0]["text"]);
         for (var i=0; i<count; i++){
           var entity = data["entities"][i];
-          var analysis = "Text: " + entity["text"] + "<br>Type: " + entity["type"] + "<br>";
+          var analysis = "Text: " + entity["text"] + "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevance"];
           $("#translation-box").append(analysis);
         }
         console.log(data["entities"][0]["type"]);
