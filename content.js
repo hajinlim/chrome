@@ -75,57 +75,36 @@ $(document).ready(function(){
       $.get(translateUrl + content, function (data) {
         var translatedText = data.data.translations[0].translatedText;
         $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + translatedText + "<br> <br>");
-        runEmotionAnalysis(translatedText);
+        runEntityAnalysis(translatedText);
       });
 
     }
 
-    function runEmotionAnalysis(transText) {
+    function runEntityAnalysis(transText) {
       $.post(watsonUrl, {
         html: transText,
         apikey: alchemyApiKey,
         outputMode: "json",
-        extract: "doc-emotion"
+        extract: "entity"
       }, function (data) {
         console.log(data);
-        var count = Object.keys(data).length;
-        var emotions = ["anger", "disgust", "fear", "joy", "sadness"];
-        var barColors = ["blue","green","placeholder","darkviolet","red"];
+        //var count = data["entities"].length();
         var lefts = ["50","100","placeholder","150","200"];
         var list = [0,1,2,3];
-        var barWidth = $("#translation-box").width();
-        $("#translation-box").append("<h2 style='padding-bottom:" + barWidth +"px'> Emotion Analysis: </h2>");
-        for (var i = 0; i < count; i++) {
-          var emotion = emotions[i];
-          var barColor = barColors[i];
-          var leftPos = lefts[i];
-          if (emotion != "fear") {
-            var emotionPercentage = data["docEmotions"][emotion];
-            var roundedEmotionPercentage = Math.round(emotionPercentage*100);
-            $("#translation-box").append("<div class='rect'style='position:absolute;bottom:90px;left:" + leftPos +"px; height:" + (barWidth*emotionPercentage) + "px;z-index: 10000000000;padding:5px; border:1px solid#000; background-color:" + barColor + ";color:white;margin:10px;display:inline-block;'>" + roundedEmotionPercentage +" %</div>");
-            //drawBars(emotionPercentage);
-          }
-        }
+        $("#translation-box").append("<h2> Entity Analysis: </h2>");
         $("#translation-box").append("<br>");
-        for (var i = 0; i < count; i++) {
-          var emotion = emotions[i];
-          if (emotion != "fear") {
-            var imageUrl = chrome.extension.getURL('/img/' + emotion + '.png');
-            var emotionImage = document.createElement('img');
-            emotionImage.src = imageUrl;
-            //emotionImage.id = "image" + list[0];
-            $(emotionImage).css("height", "50px");
-            $(emotionImage).css("display", "inline");
-            $(emotionImage).css("margin", "5px");
-            $("#translation-box").append(emotionImage);
-            var analysis = emotion + ": " + data["docEmotions"][emotion];
-            console.log(barWidth*emotionPercentage);
-            //$("#translation-box").append("<br>");
-            //$("#translation-box").append(analysis + "<br>");
+       // for (var i = 0; i < count; i++) {
+          //console.log(count);
+          console.log(data);
+          console.log(data["entities"]);
+        console.log(data["entities"]["entity"]);
+        console.log(data["entities"]["entity"]["type"]);
+        console.log(data["entities"]["entity"]["text"]);
 
+        var analysis = "Entity: " + data["entities"]["entity"];
+          $("#translation-box").append(analysis);
+        //  }
 
-          }
-        }
 
 
         //drawRect();
