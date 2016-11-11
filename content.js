@@ -10,7 +10,7 @@ $(document).ready(function(){
   $(document).on("mouseover", ".userContent", function() {
     var position = $(this).offset();
     var width = $(this).width();
-    var content = $(this).find("p").first().html();
+    var content = $(this).html();
     var height = $(this).height();
 
     function addHoverBox(){
