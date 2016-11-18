@@ -99,7 +99,7 @@ $(document).ready(function(){
         console.log(data["entities"][0]["text"]);
         for (var i=0; i<count; i++){
           var entity = data["entities"][i];
-          var analysis = "Text: " + entity["text"] + "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevance"];
+          var analysis = "Text: " + entity["text"] + "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevance"] + "<br>";
           $("#translation-box").append(analysis);
         }
         console.log(data["entities"][0]["type"]);
