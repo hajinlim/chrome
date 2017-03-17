@@ -95,39 +95,36 @@ $(document).ready(function(){
       }
     });
 
-    function runEntityAnalysis(transText) {
-      $.post(watsonUrl, {
-        html: transText,
-        apikey: alchemyApiKey,
-        outputMode: "json",
-        extract: "entity"
-      }, function (data) {
-        console.log(data);
-        //var count = data["entities"].length();
-        var lefts = ["50","100","placeholder","150","200"];
-        var list = [0,1,2,3];
-        $("#translation-box").append("<h2> Entity Analysis: </h2>");
-        $("#translation-box").append("<br>");
-          console.log(data);
-          console.log(data["entities"]);
-        var count = data["entities"].length;
-        console.log(data["entities"][0]["text"]);
-        for (var i=0; i<count; i++){
-          var entity = data["entities"][i];
-          var analysis = "Text: " + entity["text"] + "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevance"] + "<br>";
-          $("#translation-box").append(analysis);
-        }
-        console.log(data["entities"][0]["type"]);
-        console.log(data["entities"][0]["relevance"]);
-        console.log(data["entities"][0]["text"]);
+      function runEntityAnalysis(transText) {
+          $.ajax({
+              url: "https://api.textrazor.com",
+              type: "POST",
+              headers: {
+                  "X-TextRazor-Key": '5f23ec2822473b2a2d907728ff24d547ce1ea7be4ff56df732b613e6'
+              },
+              data: {
+                  text: transText,
+                  extractors: "entities",
+              },
+              success: function (res) {
+                  console.log(res);
+                  //var count = data["entities"].length();
+                  var lefts = ["50", "100", "placeholder", "150", "200"];
+                  var list = [0, 1, 2, 3];
+                  $("#translation-box").append("<h2> Entity Analysis: </h2>");
+                  var count = res.response["entities"].length;
 
-
-        //  }
-        
-      });
-
-    }
-
+                  for (var i = 0; i < count; i++) {
+                      var entity = res.response["entities"][i];
+                      var analysis = "Text: " + entity["matchedText"] + "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevanceScore"] + "<br>WikiLink: <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
+                      $("#translation-box").append(analysis);
+                  }
+              },
+              error: function (err) {
+                  console.log(err);
+              }
+          });
+      }
     function drawSentAnalysisBars(score){
 
       $("#translation-box").append("<div id='sent-bar-wrapper'> <div class='sent-bar' id='neg'>negative</div><div class='sent-bar' id='pos'>positive</div></div>");
