@@ -61,7 +61,7 @@ $(document).ready(function(){
       });
     }
     function addTranslationBox(){
-      $("body").append("<div id='translation-box' style='background-color: #EDF0F5; position:absolute; width:20%; height:auto;'></div>");
+      $("body").append("<div id='translation-box' style='background-color: #1A99DB; position:absolute; width:20%; height:auto;'></div>");
       $("#translation-box").css("left", (position.left + width) + "px");
       $("#translation-box").css("top", position.top + "px");
       $("#translation-box").css("padding", "20px");
