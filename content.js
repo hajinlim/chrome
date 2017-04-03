@@ -72,8 +72,11 @@ $(document).ready(function(){
     function translateText() {
       $.get(translateUrl + content, function (data) {
         var translatedText = data.data.translations[0].translatedText;
-        $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + translatedText + "<br> <br>");
-        runEntityAnalysis(translatedText);
+        $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + "<div id='white-box'>" + translatedText + "</div> <br> <br>");
+          $("#white-box").css('background-color', 'white');
+          $("#white-box").css('height', 'auto');
+
+          runEntityAnalysis(translatedText);
       });
 
     }
@@ -118,6 +121,7 @@ $(document).ready(function(){
               }
           });
       }
+
   });
 
 });
