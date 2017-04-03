@@ -72,7 +72,7 @@ $(document).ready(function(){
     function translateText() {
       $.get(translateUrl + content, function (data) {
         var translatedText = data.data.translations[0].translatedText;
-        $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + "<div id='white-box'>" + translatedText + "</div> <br> <br>");
+        $("#translation-box").html("<br> <br> <h2 style='color: white;'> Translation: </h2>" + "<div id='white-box'>" + translatedText + "</div> <br> <br>");
           $("#white-box").css('background-color', 'white');
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
@@ -109,7 +109,7 @@ $(document).ready(function(){
                   //var count = data["entities"].length();
                   var lefts = ["50", "100", "placeholder", "150", "200"];
                   var list = [0, 1, 2, 3];
-                  $("#translation-box").append("<h2> Entity Analysis: </h2>");
+                  $("#translation-box").append("<h2 style='color: white;'> Entity Analysis: </h2>");
                   var count = res.response["entities"].length;
                   $("#translation-box").append("<div id='white-box2'>");
                   for (var i = 0; i < count; i++) {
