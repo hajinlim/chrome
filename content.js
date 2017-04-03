@@ -75,6 +75,8 @@ $(document).ready(function(){
         $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + "<div id='white-box'>" + translatedText + "</div> <br> <br>");
           $("#white-box").css('background-color', 'white');
           $("#white-box").css('height', 'auto');
+          $("#white-box").css('padding', '10px');
+
 
           runEntityAnalysis(translatedText);
       });
@@ -109,12 +111,16 @@ $(document).ready(function(){
                   var list = [0, 1, 2, 3];
                   $("#translation-box").append("<h2> Entity Analysis: </h2>");
                   var count = res.response["entities"].length;
-
+                  $("#translation-box").append("<div id='white-box2'>");
                   for (var i = 0; i < count; i++) {
                       var entity = res.response["entities"][i];
                       var analysis = "Text: " + entity["matchedText"] + "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevanceScore"] + "<br>WikiLink: <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
-                      $("#translation-box").append(analysis);
+                      $("#white-box2").append(analysis);
                   }
+                  $("#white-box2").append("</div>");
+                  $("#white-box2").css('background-color', 'white');
+                  $("#white-box2").css('height', 'auto');
+                  $("#white-box2").css('padding', '10px');
               },
               error: function (err) {
                   console.log(err);
