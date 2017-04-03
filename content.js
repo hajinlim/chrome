@@ -42,17 +42,11 @@ $(document).ready(function(){
 
    function detectLanguage(foreignText) {
       $.post(watsonUrl, {html: foreignText, apikey: alchemyApiKey, outputMode: "json"}, function (data) {
-        //console.log(data);
         var language = data["language"];
         if (language != "english" && language!=null) {
-          //console.log("not english");
           addHoverBox();
           createButton();
           clickButton();
-
-        }
-        else{
-          //console.log("english");
         }
       });
     }
@@ -62,7 +56,6 @@ $(document).ready(function(){
 
     function clickButton(){
       $(".btn-class").click(function(){
-        //console.log('clicked');
         addTranslationBox();
         translateText();
       });
@@ -125,48 +118,6 @@ $(document).ready(function(){
               }
           });
       }
-    function drawSentAnalysisBars(score){
-
-      $("#translation-box").append("<div id='sent-bar-wrapper'> <div class='sent-bar' id='neg'>negative</div><div class='sent-bar' id='pos'>positive</div></div>");
-      $("#translation-box").append("<div id='sent-arrow'></div>");
-
-      $(".sent-bar").css("height", "20px");
-      $(".sent-bar").css("width", "100px");
-      $(".sent-bar").css("display", "inline-block");
-      $(".sent-bar").css("text-align", "center");
-      $(".sent-bar").css("font-weight", "bold");
-      $(".sent-bar").css("padding", "2px");
-
-      $("#sent-bar-wrapper").css("text-align", "center");
-
-
-      $("#neg").css("background-color", "#EB5757");
-      $("#neg").css("color", "white");
-      $("#pos").css("background-color", "#6FCF97");
-      $("#pos").css("color", "white");
-
-      var sentBarWidth = $(".sent-bar").width();
-      var arrowLeft = $("#neg").position().left;
-      if (score < 0){
-          arrowLeft += (1 - score*(-1))*sentBarWidth;
-      }
-      else if (score == null){
-        //minus 6 to account for padding and spacing
-        arrowLeft += sentBarWidth - 6;
-      }
-      else {
-        arrowLeft += sentBarWidth + (score*sentBarWidth);
-      }
-      $("#sent-arrow").css("width", "0");
-      $("#sent-arrow").css("height", "0");
-      $("#sent-arrow").css("border-right", "10px solid transparent");
-      $("#sent-arrow").css("border-left", "10px solid transparent");
-      $("#sent-arrow").css("border-top", "20px solid black");
-      $("#sent-arrow").css("position", "absolute");
-      $("#sent-arrow").css("bottom", "45px");
-      $("#sent-arrow").css("left", arrowLeft + "px");
-
-    }
   });
 
 });
