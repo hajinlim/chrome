@@ -17,6 +17,7 @@ $(document).ready(function(){
 
 
     var matchedWordsArray = [];
+    var translatedText = "";
 
     function addHoverBox(){
       $("body").append("<div id='hover-box' style='margin: -5px; border-radius:5px;border-right:8px solid #3B5998; position:absolute; width:auto; height:auto;'></div>");
@@ -71,26 +72,13 @@ $(document).ready(function(){
     }
     function translateText() {
       $.get(translateUrl + content, function (data) {
-        var translatedText = data.data.translations[0].translatedText;
-        $("#translation-box").html("<br> <br> <h2 style='color: white;'> Translation: </h2>" + "<div id='white-box'>" + translatedText + "</div> <br> <br>");
+        translatedText = data.data.translations[0].translatedText;
+        $("#translation-box").html("<br> <br> <h2 style='color: white;'> Translation: </h2>" + "<div id='white-box'></div> <br> <br>");
           $("#white-box").css('background-color', 'white');
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
 
           runEntityAnalysis(translatedText);
-
-          //highlight words in translated text
-          var text = translatedText.split(" ");
-          console.log('text ' + text);
-          for (var i=0; i<text.length; i++){
-              if (matchedWordsArray.includes(text[i])){
-                  console.log(word);
-          //change background color
-              }
-              else {
-                  console.log('ARRAY ' + matchedWordsArray + 'WORDS ' + text[i]);
-              }
-          }
 
       });
 
@@ -135,6 +123,29 @@ $(document).ready(function(){
                       $("#white-box2").append(analysis);
                   }
                   console.log(matchedWordsArray);
+
+                  //highlight words in translated text
+                  //var text = translatedText.split(" ");
+                  //console.log('text ' + text);
+                  var newText = translatedText;
+                  //for (var i=0; i<text.length; i++){
+                  for (var i=0; i<matchedWordsArray.length; i++){
+                      //if (matchedWordsArray.includes(text[i])){
+                      if (translatedText.match(matchedWordsArray[i]) != null){
+                      //    console.log('TRUE' + translatedText.match(matchedWordsArray[i]));
+                          //change background color
+                      //    $("#white-box").append(matchedWordsArray[i]);
+                          var highlightStyle = "<mark style='background-color: #ffb3b3; opacity: " + .75 + "'>";
+                          var highlighted = highlightStyle + matchedWordsArray[i] + "</mark>";
+                          newText = newText.replace(matchedWordsArray[i], highlighted);
+                          console.log('NEWTEXT' + newText);
+
+                      }
+                      else {
+                          console.log('FALSE ARRAY ' + matchedWordsArray[i]);
+                      }
+                  }
+                  $("#white-box").append(newText);
 
                   $("#white-box2").append("</div>");
                   $("#white-box2").css('background-color', 'white');
