@@ -14,8 +14,9 @@ $(document).ready(function(){
     var content = str.replace(/[&\\#,+$~%*{}]/g, '');
 
     var height = $(this).height();
-    //console.log("STR " + str);
-    console.log("CONT" + content);
+
+
+    var matchedWordsArray = [];
 
     function addHoverBox(){
       $("body").append("<div id='hover-box' style='margin: -5px; border-radius:5px;border-right:8px solid #3B5998; position:absolute; width:auto; height:auto;'></div>");
@@ -68,7 +69,6 @@ $(document).ready(function(){
       $("#translation-box").css("z-index", "300");
       $("#translation-box").css("border-radius", "5px");
     }
-
     function translateText() {
       $.get(translateUrl + content, function (data) {
         var translatedText = data.data.translations[0].translatedText;
@@ -77,8 +77,21 @@ $(document).ready(function(){
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
 
-
           runEntityAnalysis(translatedText);
+
+          //highlight words in translated text
+          var text = translatedText.split(" ");
+          console.log('text ' + text);
+          for (var i=0; i<text.length; i++){
+              if (matchedWordsArray.includes(text[i])){
+                  console.log(word);
+          //change background color
+              }
+              else {
+                  console.log('ARRAY ' + matchedWordsArray + 'WORDS ' + text[i]);
+              }
+          }
+
       });
 
     }
@@ -106,7 +119,6 @@ $(document).ready(function(){
               },
               success: function (res) {
                   console.log(res);
-                  //var count = data["entities"].length();
                   var lefts = ["50", "100", "placeholder", "150", "200"];
                   var list = [0, 1, 2, 3];
                   $("#translation-box").append("<h2 style='color: white;'> Entity Analysis: </h2>");
@@ -114,9 +126,16 @@ $(document).ready(function(){
                   $("#translation-box").append("<div id='white-box2'>");
                   for (var i = 0; i < count; i++) {
                       var entity = res.response["entities"][i];
-                      var analysis = "Text: " + entity["matchedText"] + "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevanceScore"] + "<br>WikiLink: <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
+                      var relevanceScore = entity["relevanceScore"];
+                      var matchedText = entity["matchedText"];
+                      matchedWordsArray.push(matchedText);
+                      var analysis = "Text: ";
+                      analysis += matchedText;
+                      analysis += "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevanceScore"] + "<br>WikiLink: <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
                       $("#white-box2").append(analysis);
                   }
+                  console.log(matchedWordsArray);
+
                   $("#white-box2").append("</div>");
                   $("#white-box2").css('background-color', 'white');
                   $("#white-box2").css('height', 'auto');
