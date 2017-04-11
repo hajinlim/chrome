@@ -119,7 +119,7 @@ $(document).ready(function(){
                       matchedWordsArray.push(matchedText);
                       var analysis = "Text: ";
                       analysis += matchedText;
-                      analysis += "<br>Type: " + entity["type"] + "<br>Relevance: " + entity["relevanceScore"] + "<br>WikiLink: <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
+                      analysis += "<br>Type: " + entity["type"] + "<br>WikiLink: <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
                       $("#white-box2").append(analysis);
                   }
                   console.log(matchedWordsArray);
