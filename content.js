@@ -22,6 +22,8 @@ $(document).ready(function(){
     //console.log("STR " + str);
     console.log("CONT" + content);
 
+    var translatedText = "";
+
     function addHoverBox(){
       $("body").append("<div id='hover-box' style='margin: -5px; border-radius:5px;border-right:8px solid #3B5998; position:absolute; width:auto; height:auto;'></div>");
 
@@ -73,7 +75,7 @@ $(document).ready(function(){
       });
     }
     function addTranslationBox(){
-      $("body").append("<div id='translation-box' style='background-color: #EDF0F5; position:absolute; width:20%; height:auto;'></div>");
+      $("body").append("<div id='translation-box' style='background-color: #1A99DB; position:absolute; width:20%; height:auto;'></div>");
       $("#translation-box").css("left", (position.left + width) + "px");
       $("#translation-box").css("top", position.top + "px");
       $("#translation-box").css("padding", "20px");
@@ -83,8 +85,11 @@ $(document).ready(function(){
 
     function translateText() {
       $.get(translateUrl + content, function (data) {
-        var translatedText = data.data.translations[0].translatedText;
-        $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + translatedText + "<br>");
+        translatedText = data.data.translations[0].translatedText;
+        $("#translation-box").html("<br> <br> <h2 style='color: white;'> Translation: </h2>" + "<div id='white-box'>" + translatedText + "</div> <br> <br>");
+        $("#white-box").css('background-color', 'white');
+        $("#white-box").css('height', 'auto');
+        $("#white-box").css('padding', '10px');
         runEmotionAnalysis(translatedText);
       });
 
