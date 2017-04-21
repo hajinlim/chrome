@@ -11,7 +11,7 @@ $(document).ready(function(){
     var position = $(this).offset();
     var width = $(this).width();
     var str = $(this).text();
-    var content = str.replace(/[&\\#,+$~%*{}]/g, '');
+    var content = str.replace(/[&\\#,+$~%*{}]/g, ' ');
 
     var height = $(this).height();
 
@@ -113,7 +113,7 @@ $(document).ready(function(){
                   var newResponse = [];
                   for (var i=0; i<res.response["entities"].length; i++){
                       var type = res.response["entities"][i]["type"];
-                      if (!((type != undefined) && (type[0] == "Number" || type[0] == "Money" || type[0] == "Email" || type[0] == "URL" || type[0] == "Duration" || type[0] == "Date" || type[0] == "Time"))){
+                      if (!((type != undefined) && (type[0] == "Number" || type[0] == "Money" || type[0] == "Email" || type[0] == "URL" || type[0] == "Duration" || type[0] == "Date" || type[0] == "Time" || type[0] == "Ordinal"))){
                           newResponse.push(res.response["entities"][i]);
 
                       }
@@ -168,8 +168,9 @@ $(document).ready(function(){
                       //    console.log('TRUE' + translatedText.match(matchedWordsArray[i]));
                           //change background color
                       //    $("#white-box").append(matchedWordsArray[i]);
-                          var highlightStyle = "<mark class = 'entity' id =" + matchedWordsArray[i] + " style='background-color: #ffb3b3; opacity: " + .75 + "'>";
-                          var highlighted = highlightStyle + matchedWordsArray[i] + "</mark>";
+                          var highlightStyle = "<a href='#'><mark class = 'entity' id =" + matchedWordsArray[i];
+                          highlightStyle += " style='background-color: #ffb3b3; opacity: " + .75 + "'>";
+                          var highlighted = highlightStyle + matchedWordsArray[i] + "</mark></a>";
                           newText = newText.replace(matchedWordsArray[i], highlighted);
                           //console.log('NEWTEXT' + newText);
 
@@ -184,7 +185,12 @@ $(document).ready(function(){
                   //display single entity
                   $(".entity").click(function(){
                       //console.log($(this).text());
+
+                      //TO:DO- 1) two word entities; 2) confine clicked text to translation box
                       var clickedEntity = $(this).text();
+                      $("#" + clickedEntity).css('background-color', 'yellow');
+                      $("#" + clickedEntity).css('opacity', '0.5');
+
                       //var entityText = $("#" + currentEntity["matchedText"]).text();
                       //console.log(entityText);
                       var analysis = "<b>Text:</b> ";
