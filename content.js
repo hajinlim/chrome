@@ -80,12 +80,21 @@ $(document).ready(function(){
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
           $("#white-box").css('width', 'auto');
-
+          createNextButton();
           runEntityAnalysis(translatedText);
 
       });
 
     }
+
+      function createNextButton() {
+          $("#translation-box").append('<button id="next-btn" type="button">Next</button>');
+          $("#next-btn").css("margin-left", ($("#white-box").width() + "px"));
+          $("#next-btn").css("background-color", "#3B5998");
+          $("#next-btn").css("color", "white");
+          $("#next-btn").css("border", "none");
+
+      }
     //remove translation box when click outside of it
     $(document).mouseup(function (e) {
       var container = $("#translation-box");
@@ -109,45 +118,57 @@ $(document).ready(function(){
                   extractors: "entities",
               },
               success: function (res) {
-                  console.log(res);
+                  //console.log(res);
                   var newResponse = [];
                   for (var i=0; i<res.response["entities"].length; i++){
                       var type = res.response["entities"][i]["type"];
-                      if (!((type != undefined) && (type[0] == "Number" || type[0] == "Money" || type[0] == "Email" || type[0] == "URL"))){
-                          //delete res.response["entities"][i];
+                      if (!((type != undefined) && (type[0] == "Number" || type[0] == "Money" || type[0] == "Email" || type[0] == "URL" || type[0] == "Duration" || type[0] == "Date" || type[0] == "Time"))){
                           newResponse.push(res.response["entities"][i]);
 
                       }
                   }
+
                   var lefts = ["50", "100", "placeholder", "150", "200"];
                   var list = [0, 1, 2, 3];
                   $("#translation-box").append("<h2 style='color: white;'> Entity Analysis: </h2>");
                   //var count = res.response["entities"].length;
                   var count = newResponse.length;
                   $("#translation-box").append("<div id='white-box2'>");
+
+
+
+
                   for (var i = 0; i < count; i++) {
                       //var entity = res.response["entities"][i];
                       var entity = newResponse[i];
+                      console.log(newResponse);
                       var relevanceScore = entity["relevanceScore"];
                       var matchedText = entity["matchedText"];
+
+
                       matchedWordsArray.push(matchedText);
+
+                      /*
                       var analysis = "<b>Text:</b> ";
                       analysis += matchedText;
                       analysis += "<br><b>Type:</b> " + entity["type"] + "<br>";
                       if (entity["wikiLink"] != null) {
-                          console.log(entity["wikiLink"] + true);
+                          //console.log(entity["wikiLink"] + true);
                           analysis += "<b>WikiLink:</b> <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
                       }
                       else{
-                          console.log(entity["wikiLink"] + false);
+                          //console.log(entity["wikiLink"] + false);
                       }
                       $("#white-box2").append(analysis);
+                      */
                   }
-                  console.log(matchedWordsArray);
+
+
+
+                  //console.log(matchedWordsArray);
 
                   //highlight words in translated text
-                  //var text = translatedText.split(" ");
-                  //console.log('text ' + text);
+
                   var newText = translatedText;
                   //for (var i=0; i<text.length; i++){
                   for (var i=0; i<matchedWordsArray.length; i++){
@@ -156,23 +177,54 @@ $(document).ready(function(){
                       //    console.log('TRUE' + translatedText.match(matchedWordsArray[i]));
                           //change background color
                       //    $("#white-box").append(matchedWordsArray[i]);
-                          var highlightStyle = "<mark style='background-color: #ffb3b3; opacity: " + .75 + "'>";
+                          var highlightStyle = "<mark class = 'entity' id =" + matchedWordsArray[i] + " style='background-color: #ffb3b3; opacity: " + .75 + "'>";
                           var highlighted = highlightStyle + matchedWordsArray[i] + "</mark>";
                           newText = newText.replace(matchedWordsArray[i], highlighted);
-                          console.log('NEWTEXT' + newText);
+                          //console.log('NEWTEXT' + newText);
 
                       }
                       else {
-                          console.log('FALSE ARRAY ' + matchedWordsArray[i]);
+                          //console.log('FALSE ARRAY ' + matchedWordsArray[i]);
                       }
                   }
                   $("#white-box").append(newText);
 
-                  $("#white-box2").append("</div>");
-                  $("#white-box2").css('background-color', 'white');
-                  $("#white-box2").css('height', 'auto');
-                  $("#white-box2").css('padding', '10px');
-                  $("#white-box2").css('width', 'auto');
+
+                  //display single entity
+                  $(".entity").click(function(){
+                      //console.log($(this).text());
+                      var clickedEntity = $(this).text();
+                      //var entityText = $("#" + currentEntity["matchedText"]).text();
+                      //console.log(entityText);
+                      var analysis = "<b>Text:</b> ";
+
+
+                      for (var k=0; k<newResponse.length; k++){
+                          var currentEntity = newResponse[k];
+
+
+                          //console.log(currentEntity["matchedText"] + "," + entityText);
+                          if (currentEntity["matchedText"] == clickedEntity){
+                              analysis = currentEntity["matchedText"];
+                              analysis += "<br><b>Type:</b> " + currentEntity["type"] + "<br>";
+
+                              analysis += "<b>WikiLink:</b> <a href=" + currentEntity["wikiLink"] + " target= 'blank'>" + currentEntity["wikiLink"] + "</a><br>";
+
+                          }
+                      }
+                      $("#white-box2").html(analysis + "</div>");
+
+                      //$("#white-box2").append("</div>");
+                      $("#white-box2").css('background-color', 'white');
+                      $("#white-box2").css('height', 'auto');
+                      $("#white-box2").css('padding', '10px');
+                      $("#white-box2").css('width', 'auto');
+                  });
+
+
+
+
+
 
               },
               error: function (err) {
