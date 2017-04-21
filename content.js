@@ -63,12 +63,14 @@ $(document).ready(function(){
       });
     }
     function addTranslationBox(){
-      $("body").append("<div id='translation-box' style='background-color: #1A99DB; position:absolute; width:20%; height:auto;'></div>");
+      $("body").append("<div id='translation-box' style='background-color: #1A99DB; position:absolute; width:auto; height:auto;'></div>");
       $("#translation-box").css("left", (position.left + width) + "px");
       $("#translation-box").css("top", position.top + "px");
       $("#translation-box").css("padding", "20px");
       $("#translation-box").css("z-index", "300");
       $("#translation-box").css("border-radius", "5px");
+       // $("#translation-box").css("width", "auto");
+
     }
     function translateText() {
       $.get(translateUrl + content, function (data) {
@@ -77,6 +79,7 @@ $(document).ready(function(){
           $("#white-box").css('background-color', 'white');
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
+          $("#white-box").css('width', 'auto');
 
           runEntityAnalysis(translatedText);
 
@@ -107,19 +110,37 @@ $(document).ready(function(){
               },
               success: function (res) {
                   console.log(res);
+                  var newResponse = [];
+                  for (var i=0; i<res.response["entities"].length; i++){
+                      var type = res.response["entities"][i]["type"];
+                      if (!((type != undefined) && (type[0] == "Number" || type[0] == "Money" || type[0] == "Email" || type[0] == "URL"))){
+                          //delete res.response["entities"][i];
+                          newResponse.push(res.response["entities"][i]);
+
+                      }
+                  }
                   var lefts = ["50", "100", "placeholder", "150", "200"];
                   var list = [0, 1, 2, 3];
                   $("#translation-box").append("<h2 style='color: white;'> Entity Analysis: </h2>");
-                  var count = res.response["entities"].length;
+                  //var count = res.response["entities"].length;
+                  var count = newResponse.length;
                   $("#translation-box").append("<div id='white-box2'>");
                   for (var i = 0; i < count; i++) {
-                      var entity = res.response["entities"][i];
+                      //var entity = res.response["entities"][i];
+                      var entity = newResponse[i];
                       var relevanceScore = entity["relevanceScore"];
                       var matchedText = entity["matchedText"];
                       matchedWordsArray.push(matchedText);
-                      var analysis = "Text: ";
+                      var analysis = "<b>Text:</b> ";
                       analysis += matchedText;
-                      analysis += "<br>Type: " + entity["type"] + "<br>WikiLink: <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
+                      analysis += "<br><b>Type:</b> " + entity["type"] + "<br>";
+                      if (entity["wikiLink"] != null) {
+                          console.log(entity["wikiLink"] + true);
+                          analysis += "<b>WikiLink:</b> <a href=" + entity["wikiLink"] + " target= 'blank'>" + entity["wikiLink"] + "</a><br>";
+                      }
+                      else{
+                          console.log(entity["wikiLink"] + false);
+                      }
                       $("#white-box2").append(analysis);
                   }
                   console.log(matchedWordsArray);
@@ -151,6 +172,8 @@ $(document).ready(function(){
                   $("#white-box2").css('background-color', 'white');
                   $("#white-box2").css('height', 'auto');
                   $("#white-box2").css('padding', '10px');
+                  $("#white-box2").css('width', 'auto');
+
               },
               error: function (err) {
                   console.log(err);
