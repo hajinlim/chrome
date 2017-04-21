@@ -80,21 +80,12 @@ $(document).ready(function(){
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
           $("#white-box").css('width', 'auto');
-          createNextButton();
           runEntityAnalysis(translatedText);
 
       });
 
     }
 
-      function createNextButton() {
-          $("#translation-box").append('<button id="next-btn" type="button">Next</button>');
-          $("#next-btn").css("margin-left", ($("#white-box").width() + "px"));
-          $("#next-btn").css("background-color", "#3B5998");
-          $("#next-btn").css("color", "white");
-          $("#next-btn").css("border", "none");
-
-      }
     //remove translation box when click outside of it
     $(document).mouseup(function (e) {
       var container = $("#translation-box");
