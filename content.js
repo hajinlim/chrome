@@ -6,6 +6,8 @@ var translateUrl = "https://www.googleapis.com/language/translate/v2?key=AIzaSyD
 var watsonUrl = "https://access.alchemyapi.com/calls/html/HTMLGetCombinedData";
 var alchemyApiKey = "ebdc494fb03a3ef1a8e1c43716e8fe2aea9b7d95";
 
+//document.body.appendChild(document.createElement('script')).src = 'https://okfnlabs.org/wikipediajs/wikipedia.js';
+
 $(document).ready(function(){
   $(document).on("mouseover", ".userContent", function() {
     var position = $(this).offset();
@@ -58,10 +60,12 @@ $(document).ready(function(){
 
     function clickButton(){
       $(".btn-class").click(function(){
-        addTranslationBox();
+
+          addTranslationBox();
         translateText();
       });
     }
+
     function addTranslationBox(){
       $("body").append("<div id='translation-box' style='background-color: #1A99DB; position:absolute; width:auto; height:auto;'></div>");
       $("#translation-box").css("left", (position.left + width) + "px");
@@ -80,8 +84,12 @@ $(document).ready(function(){
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
           $("#white-box").css('width', 'auto');
-          runEntityAnalysis(translatedText);
 
+
+          var removeCharsTranslation = translatedText.replace(/[&\\#,+$~%*{}]/g, ' ');
+
+          runEntityAnalysis(removeCharsTranslation);
+            console.log(removeCharsTranslation);
       });
 
     }
@@ -132,7 +140,7 @@ $(document).ready(function(){
                   for (var i = 0; i < count; i++) {
                       //var entity = res.response["entities"][i];
                       var entity = newResponse[i];
-                      console.log(newResponse);
+                      //console.log(newResponse);
                       var relevanceScore = entity["relevanceScore"];
                       var matchedText = entity["matchedText"];
 
@@ -207,15 +215,33 @@ $(document).ready(function(){
 
                               analysis += "<b>WikiLink:</b> <a href=" + currentEntity["wikiLink"] + " target= 'blank'>" + currentEntity["wikiLink"] + "</a><br>";
 
+
+
+
+                              $.getJSON("https://en.wikipedia.org/w/api.php?action=opensearch&format=json&redirects=return&search=" + currentEntity["matchedText"], function(data) {
+                                  //alert(typeof data[2][0]);
+                                  console.log(data[2][0]);
+                                  analysis += data[2][0];
+                              })
+                                  .done(function() { console.log('success');
+                                  })
+                                  .fail(function(jqXHR, textStatus, errorThrown) { console.log('getJSON request failed! ' + textStatus + errorThrown); })
+                                  .always(function() { console.log('getJSON request ended!');
+
+                                      $("#white-box2").html(analysis + "</div>");
+                                  });
+
                           }
                       }
-                      $("#white-box2").html(analysis + "</div>");
+                     // $("#white-box2").html(analysis + "</div>");
 
                       //$("#white-box2").append("</div>");
                       $("#white-box2").css('background-color', 'white');
                       $("#white-box2").css('height', 'auto');
                       $("#white-box2").css('padding', '10px');
                       $("#white-box2").css('width', 'auto');
+
+
                   });
 
 
