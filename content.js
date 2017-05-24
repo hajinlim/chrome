@@ -117,7 +117,7 @@ $(document).ready(function(){
                   extractors: "entities",
               },
               success: function (res) {
-                  //console.log(res);
+                  console.log(res);
                   var newResponse = [];
                   for (var i=0; i<res.response["entities"].length; i++){
                       var type = res.response["entities"][i]["type"];
@@ -144,9 +144,10 @@ $(document).ready(function(){
                       var relevanceScore = entity["relevanceScore"];
                       var matchedText = entity["matchedText"];
 
-
-                      matchedWordsArray.push(matchedText);
-
+                      //only add matchedText to array if not a duplicate
+                      if(jQuery.inArray(matchedText, matchedWordsArray) == -1){
+                          matchedWordsArray.push(matchedText);
+                      }
                       /*
                       var analysis = "<b>Text:</b> ";
                       analysis += matchedText;
@@ -164,7 +165,7 @@ $(document).ready(function(){
 
 
 
-                  //console.log(matchedWordsArray);
+                  console.log(matchedWordsArray);
 
                   //highlight words in translated text
 
@@ -172,15 +173,21 @@ $(document).ready(function(){
                   //for (var i=0; i<text.length; i++){
                   for (var i=0; i<matchedWordsArray.length; i++){
                       //if (matchedWordsArray.includes(text[i])){
+                      //console.log(matchedWordsArray.length);
                       if (translatedText.match(matchedWordsArray[i]) != null){
                       //    console.log('TRUE' + translatedText.match(matchedWordsArray[i]));
                           //change background color
                       //    $("#white-box").append(matchedWordsArray[i]);
-                          var highlightStyle = "<a href='#'><mark class = 'entity' id =" + matchedWordsArray[i];
+                          var highlightStyle = "<a href='#'><mark class = 'entity' id =" + matchedWordsArray[i].replace(" ", "");
+                          console.log('A ' + highlightStyle);
                           highlightStyle += " style='background-color: #ffb3b3; opacity: " + .75 + "'>";
+                          console.log('B ' + highlightStyle);
+
                           var highlighted = highlightStyle + matchedWordsArray[i] + "</mark></a>";
+                          console.log('C ' + highlighted);
+
                           newText = newText.replace(matchedWordsArray[i], highlighted);
-                          //console.log('NEWTEXT' + newText);
+                          console.log('NEWTEXT' + newText);
 
                       }
                       else {
