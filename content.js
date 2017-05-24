@@ -86,10 +86,14 @@ $(document).ready(function(){
           $("#white-box").css('width', 'auto');
 
 
-          var removeCharsTranslation = translatedText.replace(/[&\\#,+$~%*{}]/g, ' ');
+          translatedText = translatedText.replace(/[&\\#,+$~%*{}]/g, ' ');
+          translatedText = translatedText.replace("See Translation", "");
+          translatedText = translatedText.replace("See More", "");
+          translatedText = translatedText.replace("quot;", '"');
+          translatedText = translatedText.replace("quot;", '"');
 
-          runEntityAnalysis(removeCharsTranslation);
-            console.log(removeCharsTranslation);
+          runEntityAnalysis(translatedText);
+            console.log(translatedText);
       });
 
     }
