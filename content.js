@@ -68,7 +68,7 @@ $(document).ready(function(){
       });
     }
     function addTranslationBox(){
-      $("body").append("<div id='translation-box' style='background-color: #EDF0F5; position:absolute; width:20%; height:auto;'></div>");
+      $("body").append("<div id='translation-box' style='background-color: #1A99DB; position:absolute; width:20%; height:auto;'></div>");
       $("#translation-box").css("left", (position.left + width) + "px");
       $("#translation-box").css("top", position.top + "px");
       $("#translation-box").css("padding", "20px");
@@ -79,13 +79,22 @@ $(document).ready(function(){
     function translateText() {
       $.get(translateUrl + content, function (data) {
         var translatedText = data.data.translations[0].translatedText;
-        $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + translatedText + "<br>");
 
       translatedText = translatedText.replace(/[&\\#,+$~%*{}]/g, ' ');
       translatedText = translatedText.replace("See Translation", "");
       translatedText = translatedText.replace("See More", "");
       translatedText = translatedText.replace("quot;", '"');
       translatedText = translatedText.replace("quot;", '"');
+
+
+          $("#translation-box").html("<br> <br><div id='white-box'> <h2> Translation: </h2>" + translatedText + "</div><br>");
+
+
+
+          $("#white-box").css('background-color', 'white');
+          $("#white-box").css('height', 'auto');
+          $("#white-box").css('padding', '10px');
+          $("#white-box").css('width', 'auto');
         runEmotionAnalysis(translatedText);
       });
 
@@ -119,8 +128,14 @@ $(document).ready(function(){
           var lefts = ["0", "50", "100", "150", "200"];
           var list = [0, 1, 2, 3, 4];
           var barWidth = $("#translation-box").width() * (.5);
-          $("#translation-box").append("<h2 style='padding-bottom:" + barWidth + "px;'> Emotion Analysis: </h2>");
-          for (var i = 0; i < count; i++) {
+          //$("#translation-box").append("<h2 style='padding-bottom:" + barWidth + "px;'> Emotion Analysis: </h2>");
+
+            $("#translation-box").append("<br> <br><div id='white-box2'>" + "<h2 style='padding-bottom:" + barWidth + "px;'> Emotion Analysis: </h2>" + "</div> <br> <br>");
+            $("#white-box2").css('background-color', 'white');
+            $("#white-box2").css('height', 'auto');
+            $("#white-box2").css('padding', '10px');
+            $("#white-box2").css('width', 'auto');
+            for (var i = 0; i < count; i++) {
             var name = "rect" + i;
             var emotion = emotions[i];
             var barColor = barColors[i];
