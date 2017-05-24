@@ -80,6 +80,12 @@ $(document).ready(function(){
       $.get(translateUrl + content, function (data) {
         var translatedText = data.data.translations[0].translatedText;
         $("#translation-box").html("<br> <br> <h2> Translation: </h2>" + translatedText + "<br>");
+
+      translatedText = translatedText.replace(/[&\\#,+$~%*{}]/g, ' ');
+      translatedText = translatedText.replace("See Translation", "");
+      translatedText = translatedText.replace("See More", "");
+      translatedText = translatedText.replace("quot;", '"');
+      translatedText = translatedText.replace("quot;", '"');
         runEmotionAnalysis(translatedText);
       });
 
