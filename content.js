@@ -4,7 +4,7 @@ document.documentElement.style.width = '100%';
 document.body.style.width = '100%';
 var translateUrl = "https://www.googleapis.com/language/translate/v2?key=AIzaSyD4rLhLb3ZmwjLJDt-njNqFYP30eHeaBTQ&target=en&q=";
 var watsonUrl = "https://access.alchemyapi.com/calls/html/HTMLGetCombinedData";
-var alchemyApiKey = "ebdc494fb03a3ef1a8e1c43716e8fe2aea9b7d95";
+var alchemyApiKey = "e6f3d1baaf1156ab096a87fc41ae8d306ece2665";
 
 $(document).ready(function(){
   $(document).on("mouseover", ".userContent", function() {
@@ -87,7 +87,7 @@ $(document).ready(function(){
       translatedText = translatedText.replace("quot;", '"');
 
 
-          $("#translation-box").html("<br> <br><div id='white-box'> <h2> Translation: </h2>" + translatedText + "</div><br>");
+          $("#translation-box").html("<br> <br><h2 style='color: white;'> Translation: </h2> <div id='white-box'> " + translatedText + "</div><br>");
 
 
 
@@ -124,7 +124,7 @@ $(document).ready(function(){
 
             //run sentiment-analysis
             //$("#translation-box").append("<h2>Sentiment Analysis </h2>");
-            $("#translation-box").append("<br> <br><div id='white-box3'>" + "<h2> Sentiment Analysis: </h2>" + "</div> <br> <br>");
+            $("#translation-box").append("<br><h2 style='color: white;'> Sentiment Analysis: </h2><div id='white-box3'></div> <br>");
             $("#white-box3").css('background-color', 'white');
             $("#white-box3").css('height', 'auto');
             $("#white-box3").css('padding', '10px');
@@ -148,10 +148,13 @@ $(document).ready(function(){
           var barWidth = $("#translation-box").width() * (.5);
           //$("#translation-box").append("<h2 style='padding-bottom:" + barWidth + "px;'> Emotion Analysis: </h2>");
 
-            $("#translation-box").append("<br> <br><div id='white-box2'>" + "<h2 style='padding-bottom:" + barWidth + "px;'> Emotion Analysis: </h2>" + "</div> <br> <br>");
+            $("#translation-box").append("<br><h2 style='color: white;'> Emotion Analysis: </h2>");
+            $("#translation-box").append("<div id='white-box2'></div> <br>");
             $("#white-box2").css('background-color', 'white');
             $("#white-box2").css('height', 'auto');
             $("#white-box2").css('padding', '10px');
+            //$("#white-box2").css('padding-bottom', barWidth + "px");
+
             $("#white-box2").css('width', 'auto');
             for (var i = 0; i < count; i++) {
             var name = "rect" + i;
@@ -169,7 +172,7 @@ $(document).ready(function(){
               barHeight = 5;
             }
            // $("#translation-box").append("<div class='rect'style='margin-left: 25px;border-radius: 5px;position:absolute;bottom:210px;left:" + leftPos + "px; height:" + barHeight + "px;padding:5px; border:0px solid#000;line-height: " + barHeight + "px; background-color:" + barColor + ";color:white;display:inline-block;vertical-align: middle; '>" + roundedEmotionPercentage + " %</div>");
-                $("#white-box2").append("<div class='rect'style='margin-left: 25px;border-radius: 5px;position:absolute;bottom:210px;left:" + leftPos + "px; height:" + barHeight + "px;padding:5px; border:0px solid#000;line-height: " + barHeight + "px; background-color:" + barColor + ";color:white;display:inline-block;vertical-align: middle; '>" + roundedEmotionPercentage + " %</div>");
+                $("#white-box2").append("<div class='rect'style='margin-left: 25px;border-radius: 5px;position:absolute;bottom:110px;left:" + leftPos + "px; height:" + barHeight + "px;padding:5px; border:0px solid#000;line-height: " + barHeight + "px; background-color:" + barColor + ";color:white;display:inline-block;vertical-align: middle; '>" + roundedEmotionPercentage + " %</div>");
 
             /*
              $("#translation-box").append("<div class='rect' id= " + name + "; style='text-align: center; font-weight: bold;color:white;'>" + roundedEmotionPercentage +" %</div>");
@@ -198,9 +201,9 @@ $(document).ready(function(){
             var imageUrl = chrome.extension.getURL('/img/' + emotion + '.png');
             var emotionImage = document.createElement('img');
             emotionImage.src = imageUrl;
-            $(emotionImage).css("height", "50px");
+            $(emotionImage).css("height", "45px");
             $(emotionImage).css("display", "inline");
-            //$(emotionImage).css("margin", "5px");
+            $(emotionImage).css("margin", "1px");
             $("#white-box2").append(emotionImage);
           }
 
@@ -271,7 +274,7 @@ $(document).ready(function(){
       $("#sent-arrow").css("border-left", "10px solid transparent");
       $("#sent-arrow").css("border-top", "20px solid black");
       $("#sent-arrow").css("position", "absolute");
-      $("#sent-arrow").css("bottom", "45px");
+      $("#sent-arrow").css("top", "260px");
       $("#sent-arrow").css("left", arrowLeft + "px");
 
     }
