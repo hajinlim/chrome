@@ -6,6 +6,9 @@ var translateUrl = "https://www.googleapis.com/language/translate/v2?key=AIzaSyD
 var watsonUrl = "https://access.alchemyapi.com/calls/html/HTMLGetCombinedData";
 var alchemyApiKey = "e6f3d1baaf1156ab096a87fc41ae8d306ece2665";
 
+// Replace 'unnamed' with 'your_name'
+var myName = 'unnamed';
+
 $(document).ready(function(){
   $(document).on("mouseover", ".userContent", function() {
     var position = $(this).offset();
@@ -15,6 +18,8 @@ $(document).ready(function(){
     var content = str.replace(/[&\\#,+$~%*{}]/g, '');
     var height = $(this).height();
     console.log("CONT" + content);
+
+    var translatedText = "";
 
     function addHoverBox(){
       $("body").append("<div id='hover-box' style='margin: -5px; border-radius:5px;border-right:8px solid #3B5998; position:absolute; width:auto; height:auto;'></div>");
@@ -94,6 +99,7 @@ $(document).ready(function(){
           $("#white-box").css('height', 'auto');
           $("#white-box").css('padding', '10px');
           $("#white-box").css('width', 'auto');
+
         runEmotionAnalysis(translatedText);
       });
 
@@ -144,7 +150,6 @@ $(document).ready(function(){
           var lefts = ["0", "50", "100", "150", "200"];
           var list = [0, 1, 2, 3, 4];
           var barWidth = $("#translation-box").width() * (.5);
-          //$("#translation-box").append("<h2 style='padding-bottom:" + barWidth + "px;'> Emotion Analysis: </h2>");
 
             $("#translation-box").append("<br><h2 style='color: white;'> Emotion Analysis: </h2>");
             $("#translation-box").append("<div id='white-box2'></div> <br>");
@@ -154,7 +159,8 @@ $(document).ready(function(){
             //$("#white-box2").css('padding-bottom', barWidth + "px");
 
             $("#white-box2").css('width', 'auto');
-            for (var i = 0; i < count; i++) {
+
+          for (var i = 0; i < count; i++) {
             var name = "rect" + i;
             var emotion = emotions[i];
             var barColor = barColors[i];
@@ -169,9 +175,11 @@ $(document).ready(function(){
             else {
               barHeight = 5;
             }
-           // $("#translation-box").append("<div class='rect'style='margin-left: 25px;border-radius: 5px;position:absolute;bottom:210px;left:" + leftPos + "px; height:" + barHeight + "px;padding:5px; border:0px solid#000;line-height: " + barHeight + "px; background-color:" + barColor + ";color:white;display:inline-block;vertical-align: middle; '>" + roundedEmotionPercentage + " %</div>");
-                $("#white-box2").append("<div class='rect'style='margin-left: 25px;border-radius: 5px;position:absolute;bottom:110px;left:" + leftPos + "px; height:" + barHeight + "px;padding:5px; border:0px solid#000;line-height: " + barHeight + "px; background-color:" + barColor + ";color:white;display:inline-block;vertical-align: middle; '>" + roundedEmotionPercentage + " %</div>");
 
+            $("#white-box2").append("<div class='rect'style='margin-left: 25px;border-radius: 5px;position:absolute;bottom:210px;left:" + leftPos + "px; height:" + barHeight + "px;padding:5px; border:0px solid#000;line-height: " + barHeight + "px; background-color:" + barColor + ";color:white;display:inline-block;vertical-align: middle; '>" + roundedEmotionPercentage + " %</div>");
+            $("#white-box2").css('background-color', 'white');
+            $("#white-box2").css('height', '150px');
+            $("#white-box2").css('padding', '10px');
             /*
              $("#translation-box").append("<div class='rect' id= " + name + "; style='text-align: center; font-weight: bold;color:white;'>" + roundedEmotionPercentage +" %</div>");
              console.log(name);
@@ -204,6 +212,31 @@ $(document).ready(function(){
             $(emotionImage).css("margin", "1px");
             $("#white-box2").append(emotionImage);
           }
+
+
+
+          //$("#white-box3").append("<p>Type: " + sentimentType + "<br>");
+          //$("#white-box3").append("<p>Score: " + sentimentScore + "<br><br>");
+
+          drawSentAnalysisBars(sentimentScore);
+
+          // Log request information to the nodejs server.
+          var logBlob = {
+              time: Date.now(),
+              docEmotions: data.docEmotions,
+              docSentiment: data.docSentiment,
+              docTranslation: transText,
+              originalLanguage: 'TODO'
+          };
+
+            var payLoad = {
+                name: myName,
+                logBlob: logBlob
+            };
+
+            chrome.runtime.sendMessage(payLoad, function(response) {
+                console.log(response);
+            });
         }
         //if error message
         else {
@@ -217,6 +250,7 @@ $(document).ready(function(){
     function drawSentAnalysisBars(score){
         $("#white-box3").append("<div id='sent-bar-wrapper'> <div class='sent-bar' id='neg'>negative</div><div class='sent-bar' id='pos'>positive</div></div>");
         $("#white-box3").append("<div id='sent-arrow'></div>");
+
 
       $(".sent-bar").css("height", "20px");
       $(".sent-bar").css("width", "100px");
@@ -253,8 +287,15 @@ $(document).ready(function(){
       $("#sent-arrow").css("position", "absolute");
       $("#sent-arrow").css("top", "260px");
       $("#sent-arrow").css("left", arrowLeft + "px");
+      $("#white-box3").append("</div>");
+      $("#white-box3").css('background-color', 'white');
+      $("#white-box3").css('height', 'auto');
+      $("#white-box3").css('padding', '20px');
+      $("#white-box3").css('padding-top', '40px');
+
 
     }
   });
 
 });
+
