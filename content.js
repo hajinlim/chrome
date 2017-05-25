@@ -14,7 +14,6 @@ $(document).ready(function(){
     var str = $(this).text();
     var content = str.replace(/[&\\#,+$~%*{}]/g, '');
     var height = $(this).height();
-    //console.log("STR " + str);
     console.log("CONT" + content);
 
     function addHoverBox(){
@@ -115,7 +114,6 @@ $(document).ready(function(){
         html: transText,
         apikey: alchemyApiKey,
         outputMode: "json",
-        //extract: ["doc-emotion", "doc-sentiment"]
         extract: "doc-emotion, doc-sentiment"
 
       }, function (data) {
@@ -206,24 +204,6 @@ $(document).ready(function(){
             $(emotionImage).css("margin", "1px");
             $("#white-box2").append(emotionImage);
           }
-
-          /*
-          //run sentiment-analysis
-          //$("#translation-box").append("<h2>Sentiment Analysis </h2>");
-            $("#translation-box").append("<br> <br><div id='white-box3'>" + "<h2> Sentiment Analysis: </h2>" + "</div> <br> <br>");
-            $("#white-box3").css('background-color', 'white');
-            $("#white-box3").css('height', 'auto');
-            $("#white-box3").css('padding', '10px');
-            $("#white-box3").css('width', 'auto');
-
-          var sentimentType = data["docSentiment"]["type"];
-          var sentimentScore = data["docSentiment"]["score"];
-         // $("#translation-box").append("<p>Type: " + sentimentType + "<br>");
-         // $("#translation-box").append("<p>Score: " + sentimentScore + "<br><br>");
-            $("#white-box3").append("<p>Type: " + sentimentType + "<br>");
-            $("#white-box3").append("<p>Score: " + sentimentScore + "<br><br>");
-          drawSentAnalysisBars(sentimentScore);
-          */
         }
         //if error message
         else {
@@ -235,9 +215,6 @@ $(document).ready(function(){
     }
 
     function drawSentAnalysisBars(score){
-
-      //$("#translation-box").append("<div id='sent-bar-wrapper'> <div class='sent-bar' id='neg'>negative</div><div class='sent-bar' id='pos'>positive</div></div>");
-      //$("#translation-box").append("<div id='sent-arrow'></div>");
         $("#white-box3").append("<div id='sent-bar-wrapper'> <div class='sent-bar' id='neg'>negative</div><div class='sent-bar' id='pos'>positive</div></div>");
         $("#white-box3").append("<div id='sent-arrow'></div>");
 
